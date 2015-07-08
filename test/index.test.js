@@ -1,4 +1,3 @@
-
 var Analytics = require('analytics.js-core').constructor;
 var assert = require('component/assert');
 var cookie = require('cookie');
@@ -11,9 +10,7 @@ var store = require('store');
 var tester = require('analytics.js-integration-tester');
 var type = require('component/type@1.0.0');
 var Segment = require('../lib/');
-
 var sinon = require('sinon');
-
 
 var test_url = 'localhost:3000';
 
@@ -371,20 +368,21 @@ describe('DaveIO', function() {
       });
     });
 
-    var xhr;
-    var requests;
     describe('#send', function() {
       beforeEach(function() {
         analytics.spy(segment, 'session');
         console.log('doing somithing');
-        xhr = sinon.useFakeXMLHttpRequest();
-        requests = [];
-        xhr.onCreate = function(req) { requests.push(req); };
+        this.xhr = sinon.useFakeXMLHttpRequest();
+        var requests = this.requests = [];
+
+        this.xhr.onCreate = function(xhr) {
+          requests.push(xhr);
+        };
       });
 
       afterEach(function() {
         console.log('cleaning up');
-        xhr.restore();
+        this.xhr.restore();
       });
 
       it('should use http: protocol when http:', function(done) {

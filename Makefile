@@ -70,6 +70,8 @@ lint: node_modules
 # Test locally in PhantomJS.
 test-phantomjs: node_modules build.js
 	@PATH=${PATH}:./node_modules/phantomjs/bin/ $(DUOT) phantomjs $(TESTS_DIR)
+	# @$(DUOT) phantomjs $(TESTS_DIR) args: \
+	# 	--path node_modules/.bin/phantomjs
 .PHONY: test
 
 # Test locally in the browser.

@@ -26,6 +26,6 @@
     "segmentio/analytics.js-integration-tester": "1.4.x",
     "segmentio/clear-env": "0.2.x",
     "segmentio/spy": "0.3.0",
-    "cjohansen/Sinon.JS": "v1.15.4"
+    "ianstormtaylor/sinon": "v1.7.3"
   }
 }
