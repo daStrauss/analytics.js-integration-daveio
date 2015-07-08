@@ -12,7 +12,7 @@ var tester = require('analytics.js-integration-tester');
 var type = require('component/type@1.0.0');
 var Segment = require('../lib/');
 
-var sinon = require('./sinon-1.15.4');
+var sinon = require('sinon');
 
 
 var test_url = 'localhost:3000';

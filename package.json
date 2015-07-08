@@ -21,8 +21,8 @@
   "homepage": "https://segment.com/docs/integrations/segmentio/",
   "dependencies": {},
   "devDependencies": {
-    "duo": "0.12.x",
-    "duo-test": "0.2.x",
+    "duo": "0.13.2",
+    "duo-test": "0.4.1",
     "eslint": "0.x",
     "eslint-config-segment": "^1.0.10",
     "mocha": "^2.2.5",
