@@ -12,11 +12,17 @@ var tester = require('analytics.js-integration-tester');
 var type = require('component/type@1.0.0');
 var Segment = require('../lib/');
 
-describe('Segment.io', function() {
+var sinon = require('./sinon-1.15.4');
+
+
+var test_url = 'localhost:3000';
+
+describe('DaveIO', function() {
   var segment;
   var analytics;
   var options = {
-    apiKey: 'oq0vdlg7yi'
+    apiKey: 'oq0vdlg7yi',
+    eventUrl: test_url
   };
 
   before(function() {
@@ -51,17 +57,18 @@ describe('Segment.io', function() {
   }
 
   it('should have the right settings', function() {
-    analytics.compare(Segment, integration('Segment.io')
-      .option('apiKey', ''));
+    analytics.compare(Segment, integration('DaveIO')
+      .option('apiKey', '')
+      .option('eventUrl', ''));
   });
 
   it('should always be turned on', function(done) {
     var Analytics = analytics.constructor;
     var ajs = new Analytics();
     ajs.use(Segment);
-    ajs.initialize({ 'Segment.io': options });
+    ajs.initialize({ DaveIO: options });
     ajs.ready(function() {
-      var segment = ajs._integrations['Segment.io'];
+      var segment = ajs._integrations.DaveIO;
       segment.ontrack = spy();
       ajs.track('event', {}, { All: false });
       assert(segment.ontrack.called);
@@ -364,16 +371,27 @@ describe('Segment.io', function() {
       });
     });
 
+    var xhr;
+    var requests;
     describe('#send', function() {
       beforeEach(function() {
         analytics.spy(segment, 'session');
+        console.log('doing somithing');
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function(req) { requests.push(req); };
+      });
+
+      afterEach(function() {
+        console.log('cleaning up');
+        xhr.restore();
       });
 
       it('should use http: protocol when http:', function(done) {
         protocol('http:');
         segment.send('/i', { userId: 'id' }, function(err, res) {
           if (err) return done(err);
-          assert.equal('http://api.segment.io/v1/i', res.url);
+          assert.equal('http://' + test_url + '/i', res.url);
           done();
         });
       });
@@ -382,7 +400,7 @@ describe('Segment.io', function() {
         protocol('https:');
         segment.send('/i', { userId: 'id' }, function(err, res) {
           if (err) return done(err);
-          assert.equal('https://api.segment.io/v1/i', res.url);
+          assert.equal('https://' + test_url + '/i', res.url);
           done();
         });
       });
@@ -391,7 +409,7 @@ describe('Segment.io', function() {
         protocol('file:');
         segment.send('/i', { userId: 'id' }, function(err, res) {
           if (err) return done(err);
-          assert.equal('https://api.segment.io/v1/i', res.url);
+          assert.equal('https://' + test_url + '/i', res.url);
           done();
         });
       });
@@ -400,7 +418,7 @@ describe('Segment.io', function() {
         protocol('chrome-extension:');
         segment.send('/i', { userId: 'id' }, function(err, res) {
           if (err) return done(err);
-          assert.equal('https://api.segment.io/v1/i', res.url);
+          assert.equal('https://' + test_url + '/i', res.url);
           done();
         });
       });
