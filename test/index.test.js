@@ -10,8 +10,9 @@ var store = require('store');
 var tester = require('analytics.js-integration-tester');
 var type = require('component/type@1.0.0');
 var Segment = require('../lib/');
-var sinon = require('sinon');
 
+// to ensure that tests work, set up a local server
+// here that just returns {"Success":True}
 var test_url = 'localhost:3000';
 
 describe('DaveIO', function() {
@@ -371,18 +372,10 @@ describe('DaveIO', function() {
     describe('#send', function() {
       beforeEach(function() {
         analytics.spy(segment, 'session');
-        console.log('doing somithing');
-        this.xhr = sinon.useFakeXMLHttpRequest();
-        var requests = this.requests = [];
-
-        this.xhr.onCreate = function(xhr) {
-          requests.push(xhr);
-        };
       });
 
       afterEach(function() {
         console.log('cleaning up');
-        this.xhr.restore();
       });
 
       it('should use http: protocol when http:', function(done) {
